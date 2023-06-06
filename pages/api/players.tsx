@@ -16,7 +16,7 @@ export const getPlayersList = async () => {
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const players = getPlayersList();
+    const players = await getPlayersList();
     res.json(players);
   } catch (e) {
     console.error(e);
