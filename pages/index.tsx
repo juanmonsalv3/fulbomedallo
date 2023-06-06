@@ -22,7 +22,7 @@ export default function Home() {
       </Typography>
 
       <Link variant='contained' type='button' href='/players'>
-        Lista de Rodillones
+        Lista de Jugadores
       </Link>
     </Box>
   );
