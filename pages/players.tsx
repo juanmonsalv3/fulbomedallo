@@ -6,12 +6,21 @@ import { Player } from '@/types/players';
 import PlayersList from '@/app/components/players/playersList';
 import { getPlayersList } from './api/players';
 import AddPlayerButton from '@/app/components/players/addPlayerButton';
+import { useCallback, useEffect, useState } from 'react';
+import axios from 'axios';
 
 interface PlayersProps {
-  players: Player[];
+  _players: Player[];
 }
 
-export default function Players({ players }: PlayersProps) {
+export default function Players({ _players }: PlayersProps) {
+  const [players, setPlayers] = useState(_players);
+
+  const onPlayerAdded = useCallback(async () => {
+    const result = await axios.get('/api/players');
+    setPlayers(result.data as Player[]);
+  }, []);
+
   return (
     <>
       <Head>
@@ -35,7 +44,7 @@ export default function Players({ players }: PlayersProps) {
             Lista de Jugadores
           </Typography>
           <Stack direction='row' spacing={2} justifyContent='center'>
-            <AddPlayerButton />
+            <AddPlayerButton onPlayerAdded={onPlayerAdded} />
           </Stack>
         </Container>
       </Box>
@@ -50,7 +59,7 @@ export async function getServerSideProps() {
   try {
     const players = await getPlayersList();
     return {
-      props: { players: JSON.parse(JSON.stringify(players)) },
+      props: { _players: JSON.parse(JSON.stringify(players)) },
     };
   } catch (e) {
     console.error(e);

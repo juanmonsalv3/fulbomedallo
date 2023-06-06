@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Head from 'next/head';
 import { AppProps } from 'next/app';
+import { Toaster } from 'react-hot-toast';
 import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Layout from '@/app/components/layout';
@@ -21,6 +22,7 @@ export default function MyApp(props: MyAppProps) {
         <CssBaseline />
         <Layout>
           <Component {...pageProps} />
+          <Toaster position='bottom-center' />
         </Layout>
       </ThemeProvider>
     </>

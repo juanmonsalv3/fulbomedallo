@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import clientPromise from '../../lib/mongodb';
+import clientPromise from '../../../lib/mongodb';
 
 export const getPlayersList = async () => {
   const client = await clientPromise;
@@ -12,6 +12,16 @@ export const getPlayersList = async () => {
     .collation({ locale: 'en', caseLevel: true })
     .toArray();
   return players;
+};
+
+export const addPlayer = async () => {
+  const client = await clientPromise;
+  const db = client.db('fulbo');
+
+  db.collection('players').insertOne({
+    name: 'Prueba',
+    nickname: 'Prueba',
+  });
 };
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {

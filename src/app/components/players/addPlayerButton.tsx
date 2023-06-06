@@ -3,7 +3,9 @@ import React, { useCallback, useState } from 'react';
 import Modal from '../common/modal';
 import AddPlayerForm from './addPlayerForm';
 
-function AddPlayerButton() {
+type Props = { onPlayerAdded: () => void };
+
+function AddPlayerButton({ onPlayerAdded }: Props) {
   const [open, setOpen] = useState(false);
   const handleOpen = useCallback(() => setOpen(true), [setOpen]);
   const handleClose = useCallback(() => setOpen(false), [setOpen]);
@@ -18,7 +20,12 @@ function AddPlayerButton() {
           <Typography variant='h6' gutterBottom>
             Datos Jugador
           </Typography>
-          <AddPlayerForm />
+          <AddPlayerForm
+            onFinish={() => {
+              handleClose();
+              onPlayerAdded();
+            }}
+          />
         </>
       </Modal>
     </div>
