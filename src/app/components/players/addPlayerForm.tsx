@@ -1,4 +1,4 @@
-import { Button, Grid, TextField } from '@mui/material';
+import { Button, Grid, Stack, TextField } from '@mui/material';
 import axios from 'axios';
 import React, { useCallback, useState } from 'react';
 import { toast } from 'react-hot-toast';
@@ -50,9 +50,14 @@ function AddPlayerForm({ onFinish }: { onFinish: () => void }) {
         />
       </Grid>
       <Grid item xs={12}>
-        <Button variant='contained' onClick={onSubmit}>
-          Agregar
-        </Button>
+        <Stack direction='row' spacing={2} justifyContent='center'>
+          <Button variant='contained' onClick={onSubmit}>
+            Agregar
+          </Button>
+          <Button variant='contained' color="error" onClick={onFinish}>
+            Cancelar
+          </Button>
+        </Stack>
       </Grid>
     </Grid>
   );

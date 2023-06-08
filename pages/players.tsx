@@ -8,6 +8,7 @@ import { getPlayersList } from './api/players';
 import AddPlayerButton from '@/app/components/players/addPlayerButton';
 import { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
+import PageHeader from '@/app/components/common/pageHeader';
 
 interface PlayersProps {
   _players: Player[];
@@ -26,28 +27,11 @@ export default function Players({ _players }: PlayersProps) {
       <Head>
         <title>Fulbo Medallo</title>
       </Head>
-      <Box
-        sx={{
-          bgcolor: 'background.paper',
-          pt: 4,
-          pb: 2,
-        }}
-      >
-        <Container maxWidth='sm'>
-          <Typography
-            component='h1'
-            variant='h2'
-            align='center'
-            color='text.primary'
-            gutterBottom
-          >
-            Lista de Jugadores
-          </Typography>
-          <Stack direction='row' spacing={2} justifyContent='center'>
-            <AddPlayerButton onPlayerAdded={onPlayerAdded} />
-          </Stack>
-        </Container>
-      </Box>
+      <PageHeader title='Lista de Jugadores'>
+        <Stack direction='row' spacing={2} justifyContent='left'>
+          <AddPlayerButton onPlayerAdded={onPlayerAdded} />
+        </Stack>
+      </PageHeader>
       <Container sx={{ py: 4 }} maxWidth='md'>
         <PlayersList items={players} />
       </Container>

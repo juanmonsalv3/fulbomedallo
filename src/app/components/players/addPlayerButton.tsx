@@ -13,7 +13,7 @@ function AddPlayerButton({ onPlayerAdded }: Props) {
   return (
     <div>
       <Button variant='contained' onClick={handleOpen}>
-        Agregar Jugador
+        Nuevo
       </Button>
       <Modal open={open} onClose={handleClose}>
         <>
