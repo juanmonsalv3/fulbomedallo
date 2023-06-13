@@ -66,7 +66,9 @@ export const PlayersForm = ({ player, onUpdatePlayerList, closeEdit }: PlayerFor
 
       await axios.request({ url, method, data: formik.values });
 
-      player && closeEdit();
+      if (player && closeEdit) {
+        closeEdit();
+      }
       onUpdatePlayerList();
       toast.success(message);
     } catch (e) {
