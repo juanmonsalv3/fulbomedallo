@@ -1,4 +1,4 @@
-import React, {PropsWithChildren, useState} from 'react';
+import React, {Key, PropsWithChildren, useState} from 'react';
 import {Avatar, List, ListItem, ListItemAvatar, ListItemText,} from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
@@ -68,15 +68,15 @@ function PlayersList({ items, onUpdatePlayerList }: PropsWithChildren<PlayersLis
         </ListItem>
       )}
       {items.map((item) => (
-        <ListItem key={item._id}>
+        <ListItem key={item._id as unknown as Key}>
           <ListItemAvatar>
             <Avatar>
               <PersonIcon />
             </Avatar>
           </ListItemAvatar>
           <ListItemText primary={item.nickname} secondary={item.name} />
-            <EditIcon onClick={onEdit.bind(null, item._id)}/>
-            <DeleteIcon onClick={onDelete.bind(null, item._id)}/>
+            <EditIcon onClick={onEdit.bind(null, item._id as ObjectId)}/>
+            <DeleteIcon onClick={onDelete.bind(null, item._id as ObjectId)}/>
         </ListItem>
       ))}
     </List>
