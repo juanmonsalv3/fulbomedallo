@@ -1,9 +1,6 @@
 import Head from 'next/head';
-import { Container, Stack } from '@mui/material';
-import { Player } from '@/types/players';
-import PlayersList from '@/app/components/players/playersList';
-import { useCallback, useEffect, useState } from 'react';
-import axios from 'axios';
+import {Container} from '@mui/material';
+import {Player} from '@/types/players';
 import PageHeader from '@/app/components/common/pageHeader';
 import AddMatchForm from '@/app/components/matches/AddMatchForm';
 

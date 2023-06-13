@@ -1,6 +1,5 @@
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import { Button } from '@mui/material';
 import Head from 'next/head';
 import Link from '@/app/components/common/Link';
 
@@ -21,7 +20,7 @@ export default function Home() {
         Fulbo Medallo
       </Typography>
 
-      <Link variant='contained' type='button' href='/players'>
+      <Link variant='contained' type='button' href='/players/index'>
         Lista de Jugadores
       </Link>
     </Box>
