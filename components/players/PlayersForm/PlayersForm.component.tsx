@@ -80,7 +80,7 @@ export const PlayersForm = ({ player, onUpdatePlayerList, closeEdit }: PlayerFor
     if (player) {
       formik.setValues({ ...player });
     }
-  }, [player]);
+  }, [formik, player]);
 
   return (
     <form onSubmit={submit} style={{paddingTop: '20px'}}>
