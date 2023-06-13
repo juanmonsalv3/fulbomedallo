@@ -1,35 +1,36 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import {NextApiRequest, NextApiResponse} from 'next';
 import clientPromise from '../../../lib/mongodb';
+import {Player} from "@/types/players";
 
-export const getPlayersList = async () => {
+export const addPlayer = async (playerData: Player) => {
   const client = await clientPromise;
   const db = client.db('fulbo');
 
-  const players = await db
-    .collection('players')
-    .find({})
-    .sort({ name: 1 })
-    .collation({ locale: 'en', caseLevel: true })
-    .toArray();
-  return players;
+  return await db.collection('players').insertOne(playerData);
 };
 
-export const addPlayer = async () => {
+export const getPlayers = async () => {
   const client = await clientPromise;
   const db = client.db('fulbo');
 
-  db.collection('players').insertOne({
-    name: 'Prueba',
-    nickname: 'Prueba',
-  });
+  return await db
+    .collection('players')
+    .find({})
+    .sort({name: 1})
+    .collation({locale: 'en', caseLevel: true})
+    .toArray();
 };
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  try {
-    const players = await getPlayersList();
+  if (req.method === 'POST') {
+    const player = await addPlayer(req.body);
+
+    res.json(player)
+  }
+
+  if (req.method === 'GET') {
+    const players = await getPlayers();
+
     res.json(players);
-  } catch (e) {
-    console.error(e);
-    res.status(500);
   }
 };
