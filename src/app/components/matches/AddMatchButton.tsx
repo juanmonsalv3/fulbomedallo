@@ -1,7 +1,6 @@
 import { Button, Typography } from '@mui/material';
 import React, { useCallback, useState } from 'react';
 import Modal from '../common/modal';
-import AddPlayerForm from './AddMatchForm';
 import AddMatchForm from './AddMatchForm';
 
 type Props = { onPlayerAdded: () => void };
