@@ -1,7 +1,7 @@
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Head from 'next/head';
-import Link from '@/app/components/common/Link';
+import CustomLink from '@/app/components/common/CustomLink';
 
 export default function Home() {
   return (
@@ -20,9 +20,9 @@ export default function Home() {
         Fulbo Medallo
       </Typography>
 
-      <Link variant='contained' type='button' href='/players/index'>
+      <CustomLink variant='contained' type='button' href='/players/index'>
         Lista de Jugadores
-      </Link>
+      </CustomLink>
     </Box>
   );
 }
