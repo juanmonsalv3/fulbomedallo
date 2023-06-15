@@ -1,29 +1,34 @@
-import { Button, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import React, { useCallback, useState } from 'react';
-import Modal from '../common/modal';
-import AddMatchForm from './AddMatchForm';
+import CustomDialog from '../common/dialogs/CustomDialog';
+import MatchForm from './MatchForm';
+import { ObjectId } from 'mongodb';
 
-type Props = { onPlayerAdded: () => void };
+type Props = { onMatchAdded: (id: ObjectId) => void };
 
-function AddMatchButton({ onPlayerAdded }: Props) {
+function AddMatchButton({ onMatchAdded }: Props) {
   const [open, setOpen] = useState(false);
   const handleOpen = useCallback(() => setOpen(true), [setOpen]);
   const handleClose = useCallback(() => setOpen(false), [setOpen]);
 
   return (
-    <div>
+    <Box>
       <Button variant='contained' onClick={handleOpen}>
         Nuevo
       </Button>
-      <Modal open={open} onClose={handleClose}>
-        <>
-          <Typography variant='h6' gutterBottom>
-            Datos Partido
-          </Typography>
-          <AddMatchForm onAddMatch={console.log}/>
-        </>
-      </Modal>
-    </div>
+      <CustomDialog
+        title='Datos Partido'
+        isOpen={open}
+        handleCancel={handleClose}
+      >
+        <MatchForm
+          onSave={(id) => {
+            setOpen(false);
+            onMatchAdded(id)
+          }}
+        />
+      </CustomDialog>
+    </Box>
   );
 }
 

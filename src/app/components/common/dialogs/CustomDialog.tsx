@@ -34,7 +34,7 @@ const StyledCloseButton = styled(IconButton)`
   right: 8px;
 `;
 
-function Dialog({
+function CustomDialog({
   title,
   isOpen,
   showActions = false,
@@ -63,4 +63,4 @@ function Dialog({
   );
 }
 
-export default Dialog;
+export default CustomDialog;
