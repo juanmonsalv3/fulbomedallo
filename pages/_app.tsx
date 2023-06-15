@@ -6,6 +6,9 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Layout from '@/app/components/layout';
 
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+
 export interface MyAppProps extends AppProps {}
 
 const defaultTheme = createTheme();
@@ -20,10 +23,12 @@ export default function MyApp(props: MyAppProps) {
       <ThemeProvider theme={defaultTheme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
-        <Layout>
-          <Component {...pageProps} />
-          <Toaster position='bottom-center' />
-        </Layout>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <Layout>
+            <Component {...pageProps} />
+            <Toaster position='bottom-center' />
+          </Layout>
+        </LocalizationProvider>
       </ThemeProvider>
     </>
   );

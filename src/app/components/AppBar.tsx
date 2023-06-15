@@ -12,6 +12,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import CustomLink from './common/CustomLink';
+import { Person2Rounded } from '@mui/icons-material';
 
 const pages = [
   { label: 'Jugadores', href: '/players' },
@@ -140,7 +141,9 @@ function ResponsiveAppBar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title='Open settings'>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt='Remy Sharp' src='/static/images/avatar/2.jpg' />
+                <Avatar alt='Remy Sharp'>
+                  <Person2Rounded/>
+                </Avatar>
               </IconButton>
             </Tooltip>
             <Menu

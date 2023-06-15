@@ -4,7 +4,8 @@ import MatchesList from '@/app/components/matches/MatchesList';
 import { Match } from '@/types/matches';
 import { Container, Stack } from '@mui/material';
 import Head from 'next/head';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
+import { getMatches } from '../api/matches';
 
 interface MatchesProps {
   _matches: Match[];
@@ -13,6 +14,10 @@ interface MatchesProps {
 function Matches({ _matches }: MatchesProps) {
   const [matches, setMatches] = useState(_matches);
 
+  const onMatchAdded = useCallback(() => {
+    console.log('redirect to match');
+  }, []);
+
   return (
     <>
       <Head>
@@ -20,7 +25,7 @@ function Matches({ _matches }: MatchesProps) {
       </Head>
       <PageHeader title='Cotejos'>
         <Stack direction='row' spacing={2} justifyContent='left'>
-          <AddMatchButton onPlayerAdded={console.log} />
+          <AddMatchButton onMatchAdded={onMatchAdded} />
         </Stack>
       </PageHeader>
       <Container sx={{ py: 4 }} maxWidth='md'>
@@ -32,17 +37,7 @@ function Matches({ _matches }: MatchesProps) {
 
 export async function getServerSideProps() {
   try {
-    const matches = [
-      {
-        _id: 'asdasdasd',
-        name: 'Sr Gol 10 junio',
-        place: {
-          _id: 'asdasdfdgf',
-          name: 'Señor Gol',
-          type: '7v7',
-        },
-      },
-    ];
+    const matches = await getMatches();
     return {
       props: { _matches: JSON.parse(JSON.stringify(matches)) },
     };

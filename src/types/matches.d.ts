@@ -1,3 +1,5 @@
+import { ObjectId } from "mongodb";
+
 export interface Field {
   _id: string;
   name: string;
@@ -5,7 +7,8 @@ export interface Field {
 }
 
 export interface Match {
-  _id: string;
+  _id: ObjectId;
   name: string;
-  place: Field;
+  field: Field;
+  date: string;
 }

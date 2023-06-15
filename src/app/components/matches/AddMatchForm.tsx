@@ -1,21 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import {
-  TextField,
-  Button,
-  Grid,
-  Typography,
-  Select,
-  MenuItem,
-  FormControl,
-} from '@mui/material';
+import { TextField, Button, Grid, Typography, MenuItem } from '@mui/material';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { Formik, Field } from 'formik';
 import { Field as FieldType } from '@/types/matches';
 import axios from 'axios';
+import dayjs, { Dayjs } from 'dayjs';
 import * as Yup from 'yup';
+
+const FORMAT = 'DD/MM/YYYY';
 
 interface MatchData {
   name: string;
   field: string;
+  date: Dayjs;
 }
 
 interface AddMatchFormProps {
@@ -38,30 +35,43 @@ const AddMatchForm: React.FC<AddMatchFormProps> = ({ onAddMatch }) => {
   const initialValues: MatchData = {
     name: '',
     field: '',
+    date: dayjs(),
   };
 
-  const onSubmit = (
+  const onSubmit = async (
     values: MatchData,
     { resetForm }: { resetForm: () => void }
   ) => {
+    const response = await axios.post('/api/matches', {
+      ...values,
+      date: values.date.format(FORMAT),
+    });
+
     onAddMatch(values);
     resetForm();
   };
 
   return (
-    <div>
-      <Typography variant='h6' gutterBottom>
-        Add Match
-      </Typography>
-      <Formik
-        initialValues={initialValues}
-        onSubmit={onSubmit}
-        validationSchema={MatchSchema}
-      >
-        {({ values, handleSubmit, handleChange, errors }) => (
-          <form onSubmit={handleSubmit}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
+    <Formik
+      initialValues={initialValues}
+      onSubmit={onSubmit}
+      validationSchema={MatchSchema}
+    >
+      {({ values, handleSubmit, handleChange, errors, setFieldValue }) => (
+        <form onSubmit={handleSubmit}>
+          <Grid container>
+            <Grid
+              container
+              item
+              xs={12}
+              md={5}
+              gap={2}
+              direction='column'
+              justifyContent='flex-start'
+              wrap='nowrap'
+              flexBasis='auto'
+            >
+              <Grid item xs={12} zeroMinWidth>
                 <Field
                   as={TextField}
                   name='name'
@@ -70,7 +80,7 @@ const AddMatchForm: React.FC<AddMatchFormProps> = ({ onAddMatch }) => {
                   error={!!errors.name}
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} zeroMinWidth>
                 <TextField
                   select
                   name='field'
@@ -87,16 +97,27 @@ const AddMatchForm: React.FC<AddMatchFormProps> = ({ onAddMatch }) => {
                   ))}
                 </TextField>
               </Grid>
+            </Grid>
+            <Grid item xs={12} md={7}>
               <Grid item xs={12}>
-                <Button type='submit' variant='contained' color='primary'>
-                  Add Match
-                </Button>
+                <DatePicker
+                  defaultValue={values.date}
+                  format={FORMAT}
+                  onChange={(val: Dayjs | null) =>
+                    setFieldValue('date', val as Dayjs)
+                  }
+                />
               </Grid>
             </Grid>
-          </form>
-        )}
-      </Formik>
-    </div>
+            <Grid item xs={12}>
+              <Button type='submit' variant='contained' color='primary'>
+                Agregar
+              </Button>
+            </Grid>
+          </Grid>
+        </form>
+      )}
+    </Formik>
   );
 };
 
