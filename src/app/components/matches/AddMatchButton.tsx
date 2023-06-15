@@ -2,7 +2,7 @@ import { Box, Button, Typography } from '@mui/material';
 import React, { useCallback, useState } from 'react';
 import Modal from '../common/modal';
 import AddMatchForm from './AddMatchForm';
-import Dialog from '../common/dialogs/Dialog';
+import CustomDialog from '../common/dialogs/CustomDialog';
 import MatchForm from './MatchForm';
 
 type Props = { onMatchAdded: () => void };
@@ -17,9 +17,9 @@ function AddMatchButton({ onMatchAdded }: Props) {
       <Button variant='contained' onClick={handleOpen}>
         Nuevo
       </Button>
-      <Dialog title='Datos Partido' isOpen={open} handleCancel={handleClose}>
+      <CustomDialog title='Datos Partido' isOpen={open} handleCancel={handleClose}>
         <MatchForm onSave={onMatchAdded} />
-      </Dialog>
+      </CustomDialog>
     </Box>
   );
 }

@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import clientPromise from '../../lib/mongodb';
+import clientPromise from '../../../lib/mongodb';
 import { Match } from '@/types/matches';
 import { ObjectId } from 'mongodb';
 

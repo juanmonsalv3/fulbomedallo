@@ -6,13 +6,24 @@ import { Container, Stack } from '@mui/material';
 import Head from 'next/head';
 import React, { useCallback, useState } from 'react';
 import { getMatches } from '../api/matches';
+import axios from 'axios';
 
 interface MatchesProps {
   _matches: Match[];
 }
 
+async function fetchMatches() {
+  const response = await axios.get('/api/matches');
+  return response.data as Match[];
+}
+
 function Matches({ _matches }: MatchesProps) {
   const [matches, setMatches] = useState(_matches);
+
+  const updateMatchesList = useCallback(async () => {
+    const matches = await fetchMatches();
+    setMatches(matches);
+  }, []);
 
   const onMatchAdded = useCallback(() => {
     console.log('redirect to match');
@@ -29,7 +40,7 @@ function Matches({ _matches }: MatchesProps) {
         </Stack>
       </PageHeader>
       <Container sx={{ py: 4 }} maxWidth='md'>
-        <MatchesList items={matches} />
+        <MatchesList items={matches} updateMatchesList={updateMatchesList} />
       </Container>
     </>
   );

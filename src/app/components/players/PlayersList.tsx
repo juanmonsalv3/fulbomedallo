@@ -14,7 +14,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { ObjectId } from 'mongodb';
 import { toast } from 'react-hot-toast';
 import { PlayersForm } from './players-form';
-import Dialog from '../common/dialogs/Dialog';
+import CustomDialog from '../common/dialogs/CustomDialog';
 
 import axios from 'axios';
 import ConfirmDialog from '../common/dialogs/ConfirmDialog';
@@ -99,13 +99,13 @@ function PlayersList({
           </ListItem>
         ))}
       </List>
-      <Dialog title='Editar Jugador' isOpen={openEdit} handleCancel={closeEdit}>
+      <CustomDialog title='Editar Jugador' isOpen={openEdit} handleCancel={closeEdit}>
         <PlayersForm
           player={playerEditing}
           onUpdatePlayerList={onUpdatePlayerList}
           closeEdit={closeEdit}
         />
-      </Dialog>
+      </CustomDialog>
       <ConfirmDialog
         title='Eliminar Jugador'
         contentText='Desea eliminar el jugador?'

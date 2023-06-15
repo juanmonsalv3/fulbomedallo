@@ -8,7 +8,7 @@ import axios from 'axios';
 import PageHeader from '@/app/components/common/pageHeader';
 import { PlayersForm } from '../../src/app/components/players/players-form';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import Dialog from '@/app/components/common/dialogs/Dialog';
+import CustomDialog from '@/app/components/common/dialogs/CustomDialog';
 
 interface PlayersProps {
   _players: Player[];
@@ -44,9 +44,9 @@ export default function Players({ _players }: PlayersProps) {
       </PageHeader>
       <Container sx={{ py: 4 }} maxWidth='md'>
         <PlayersList items={players} onUpdatePlayerList={onUpdatePlayerList} />
-        <Dialog title='Editar Jugador' isOpen={open} handleCancel={handleClose}>
+        <CustomDialog title='Editar Jugador' isOpen={open} handleCancel={handleClose}>
           <PlayersForm onUpdatePlayerList={onUpdatePlayerList} />
-        </Dialog>
+        </CustomDialog>
       </Container>
     </>
   );
