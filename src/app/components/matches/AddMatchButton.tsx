@@ -1,7 +1,5 @@
 import { Box, Button, Typography } from '@mui/material';
 import React, { useCallback, useState } from 'react';
-import Modal from '../common/modal';
-import AddMatchForm from './AddMatchForm';
 import CustomDialog from '../common/dialogs/CustomDialog';
 import MatchForm from './MatchForm';
 
