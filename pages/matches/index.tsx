@@ -7,6 +7,8 @@ import Head from 'next/head';
 import React, { useCallback, useState } from 'react';
 import { getMatches } from '../api/matches';
 import axios from 'axios';
+import { ObjectId } from 'mongodb';
+import { useRouter } from 'next/router';
 
 interface MatchesProps {
   _matches: Match[];
@@ -18,6 +20,7 @@ async function fetchMatches() {
 }
 
 function Matches({ _matches }: MatchesProps) {
+  const router = useRouter();
   const [matches, setMatches] = useState(_matches);
 
   const updateMatchesList = useCallback(async () => {
@@ -25,9 +28,12 @@ function Matches({ _matches }: MatchesProps) {
     setMatches(matches);
   }, []);
 
-  const onMatchAdded = useCallback(() => {
-    console.log('redirect to match');
-  }, []);
+  const onMatchAdded = useCallback(
+    (id: ObjectId) => {
+      router.push('/matches/' + id);
+    },
+    [router]
+  );
 
   return (
     <>

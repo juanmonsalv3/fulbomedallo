@@ -1,14 +1,12 @@
 import Head from 'next/head';
-import {Container} from '@mui/material';
-import {Player} from '@/types/players';
+import { Container } from '@mui/material';
+import { Player } from '@/types/players';
 import PageHeader from '@/app/components/common/pageHeader';
-import AddMatchForm from '@/app/components/matches/AddMatchForm';
+import { useRouter } from 'next/router';
 
-interface PlayersProps {
-  _players: Player[];
-}
+export default function MatchDisplay() {
+  const router = useRouter();
 
-export default function NewMatch({ _players }: PlayersProps) {
   return (
     <>
       <Head>
@@ -16,7 +14,7 @@ export default function NewMatch({ _players }: PlayersProps) {
       </Head>
       <PageHeader title='Lista de Jugadores'></PageHeader>
       <Container sx={{ py: 4 }} maxWidth='md'>
-        <AddMatchForm onAddMatch={console.log} />
+        {router.query.id}
       </Container>
     </>
   );

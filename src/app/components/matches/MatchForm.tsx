@@ -6,6 +6,7 @@ import { Field as FieldType, Match } from '@/types/matches';
 import axios from 'axios';
 import dayjs, { Dayjs } from 'dayjs';
 import * as Yup from 'yup';
+import { ObjectId } from 'mongodb';
 
 const FORMAT = 'YYYY/MM/DD';
 
@@ -17,7 +18,7 @@ interface MatchData {
 
 interface AddMatchFormProps {
   matchData?: Match;
-  onSave: () => void;
+  onSave: (id: ObjectId) => void;
 }
 
 const MatchSchema = Yup.object().shape({
@@ -49,8 +50,8 @@ const MatchForm: React.FC<AddMatchFormProps> = ({ matchData, onSave }) => {
       date: values.date.format(FORMAT),
       _id: matchData?._id,
     });
-    onSave();
-    // resetForm();
+    resetForm();
+    onSave(response.data.insertedId);
   };
 
   return (
