@@ -2,25 +2,27 @@ import Head from 'next/head';
 import { Button, Container } from '@mui/material';
 import { Player } from '@/types/players';
 import PlayersList from '@/app/components/players/PlayersList';
-import { getPlayers } from '../api/players';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 import PageHeader from '@/app/components/common/pageHeader';
 import { PlayersForm } from '../../src/app/components/players/players-form';
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import CustomDialog from '@/app/components/common/dialogs/CustomDialog';
 
-interface PlayersProps {
-  _players: Player[];
-}
-
-export default function Players({ _players }: PlayersProps) {
+export default function Players() {
   const [open, setOpen] = useState(false);
-  const [players, setPlayers] = useState(_players);
+  const [players, setPlayers] = useState<Player[]>([]);
 
-  const onUpdatePlayerList = useCallback(async () => {
+  async function updatePlayers() {
     const result = await axios.get('/api/players');
     setPlayers(result.data as Player[]);
+  }
+
+  useEffect(() => {
+    updatePlayers();
+  }, []);
+
+  const onUpdatePlayerList = useCallback(async () => {
+    updatePlayers();
     handleClose();
   }, []);
 
@@ -44,7 +46,11 @@ export default function Players({ _players }: PlayersProps) {
       </PageHeader>
       <Container sx={{ py: 4 }} maxWidth='md'>
         <PlayersList items={players} onUpdatePlayerList={onUpdatePlayerList} />
-        <CustomDialog title='Editar Jugador' isOpen={open} handleCancel={handleClose}>
+        <CustomDialog
+          title='Editar Jugador'
+          isOpen={open}
+          handleCancel={handleClose}
+        >
           <PlayersForm onUpdatePlayerList={onUpdatePlayerList} />
         </CustomDialog>
       </Container>
@@ -52,14 +58,14 @@ export default function Players({ _players }: PlayersProps) {
   );
 }
 
-export async function getServerSideProps() {
-  try {
-    const players = await getPlayers();
-    return {
-      props: { _players: JSON.parse(JSON.stringify(players)) },
-    };
-  } catch (e) {
-    console.error(e);
-    return { props: { _players: [] } };
-  }
-}
+// export async function getServerSideProps() {
+//   try {
+//     const players = await getPlayers();
+//     return {
+//       props: { _players: JSON.parse(JSON.stringify(players)) },
+//     };
+//   } catch (e) {
+//     console.error(e);
+//     return { props: { _players: [] } };
+//   }
+// }

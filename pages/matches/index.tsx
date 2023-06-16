@@ -4,29 +4,28 @@ import MatchesList from '@/app/components/matches/MatchesList';
 import { Match } from '@/types/matches';
 import { Container, Stack } from '@mui/material';
 import Head from 'next/head';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { getMatches } from '../api/matches';
 import axios from 'axios';
 import { ObjectId } from 'mongodb';
 import { useRouter } from 'next/router';
 
-interface MatchesProps {
-  _matches: Match[];
-}
-
-async function fetchMatches() {
-  const response = await axios.get('/api/matches');
-  return response.data as Match[];
-}
-
-function Matches({ _matches }: MatchesProps) {
+function Matches() {
   const router = useRouter();
-  const [matches, setMatches] = useState(_matches);
+  const [matches, setMatches] = useState<Match[]>([]);
+
+  const fetchMatches = useCallback(async () => {
+    const response = await axios.get('/api/matches');
+    setMatches(response.data as Match[]);
+  }, []);
+
+  useEffect(() => {
+    fetchMatches();
+  }, [fetchMatches]);
 
   const updateMatchesList = useCallback(async () => {
-    const matches = await fetchMatches();
-    setMatches(matches);
-  }, []);
+    fetchMatches();
+  }, [fetchMatches]);
 
   const onMatchAdded = useCallback(
     (id: ObjectId) => {
@@ -52,16 +51,16 @@ function Matches({ _matches }: MatchesProps) {
   );
 }
 
-export async function getServerSideProps() {
-  try {
-    const matches = await getMatches();
-    return {
-      props: { _matches: JSON.parse(JSON.stringify(matches)) },
-    };
-  } catch (e) {
-    console.error(e);
-    return { props: { _matches: [] } };
-  }
-}
+// export async function getServerSideProps() {
+//   try {
+//     const matches = await getMatches();
+//     return {
+//       props: { _matches: JSON.parse(JSON.stringify(matches)) },
+//     };
+//   } catch (e) {
+//     console.error(e);
+//     return { props: { _matches: [] } };
+//   }
+// }
 
 export default Matches;
