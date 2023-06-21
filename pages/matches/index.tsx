@@ -35,7 +35,7 @@ function Matches() {
   );
 
   return (
-    <>
+    <> 
       <Head>
         <title>Fulbo Medallo</title>
       </Head>

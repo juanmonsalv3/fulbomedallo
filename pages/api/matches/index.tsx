@@ -54,6 +54,8 @@ const updateMatch = async (matchData: Match) => {
   const result = await db
     .collection('matches')
     .updateOne(filter, updateDoc, options);
+
+  return result;
 };
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
