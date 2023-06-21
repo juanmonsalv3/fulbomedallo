@@ -45,7 +45,8 @@ const MatchForm: React.FC<AddMatchFormProps> = ({ matchData, onSave }) => {
     values: MatchData,
     { resetForm }: { resetForm: () => void }
   ) => {
-    const response = await axios.post('/api/matches', {
+    const saveMethod = matchData?._id ? axios.patch : axios.post;
+    const response = await saveMethod('/api/matches', {
       ...values,
       date: values.date.format(FORMAT),
       _id: matchData?._id,
@@ -53,6 +54,10 @@ const MatchForm: React.FC<AddMatchFormProps> = ({ matchData, onSave }) => {
     resetForm();
     onSave(response.data.insertedId);
   };
+
+  if (fields.length === 0) {
+    return null;
+  }
 
   return (
     <Formik
@@ -103,7 +108,7 @@ const MatchForm: React.FC<AddMatchFormProps> = ({ matchData, onSave }) => {
             </Grid>
             <Grid item xs={12}>
               <Button type='submit' variant='contained' color='primary'>
-                Agregar
+                Guardar
               </Button>
             </Grid>
           </Grid>

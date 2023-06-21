@@ -12,7 +12,7 @@ export default function MatchDisplay() {
       <Head>
         <title>Fulbo Medallo</title>
       </Head>
-      <PageHeader title='Lista de Jugadores'></PageHeader>
+      <PageHeader title='Datos del Partido'></PageHeader>
       <Container sx={{ py: 4 }} maxWidth='md'>
         {router.query.id}
       </Container>
