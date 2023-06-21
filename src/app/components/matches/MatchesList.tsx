@@ -10,7 +10,7 @@ import MatchForm from './MatchForm';
 import CustomDialog from '../common/dialogs/CustomDialog';
 import ConfirmDialog from '../common/dialogs/ConfirmDialog';
 import axios from 'axios';
-
+import Link from 'next/link';
 interface PlayersListProps {
   items: Match[];
   updateMatchesList: () => void;
@@ -59,8 +59,12 @@ function MatchesList({
   );
 
   const onEditClick = useCallback(async (id: ObjectId) => {
-    console.log('edit', id);
-  }, []);
+    const match = items.find((i) => i._id === id);
+      if (match) {
+        setMatchEditing(match);
+        setOpenEdit(true);
+      }
+  }, [items]);
 
   return (
     <>
@@ -84,12 +88,13 @@ function MatchesList({
               </>
             }
           >
-            <ListItemAvatar>
+            <ListItemAvatar onClick={console.log.bind(null, 'aksld')}>
               <Avatar>
                 <PersonIcon />
               </Avatar>
             </ListItemAvatar>
             <ListItemText
+              onClick={console.log.bind(null, 'kkkk')}
               primary={getPrimaryText(item)}
               secondary={getSecondaryText(item)}
             />

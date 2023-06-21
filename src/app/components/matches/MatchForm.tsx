@@ -106,6 +106,10 @@ const MatchForm: React.FC<AddMatchFormProps> = ({ matchData, onSave }) => {
     onSave(response.data.insertedId);*/
   };
 
+  if (fields.length === 0) {
+    return null;
+  }
+
   return (
     <Formik
       initialValues={initialValues}
@@ -257,7 +261,7 @@ const MatchForm: React.FC<AddMatchFormProps> = ({ matchData, onSave }) => {
             </Grid>
             <Grid item xs={12}>
               <Button type='submit' variant='contained' color='primary'>
-                Agregar
+                Guardar
               </Button>
             </Grid>
           </Grid>
