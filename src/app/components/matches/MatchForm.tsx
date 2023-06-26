@@ -88,6 +88,13 @@ const MatchForm: React.FC<AddMatchFormProps> = ({ matchData, onSave }) => {
     const payload = {
       ...values,
       date: values.date.format(FORMAT),
+      _id: matchData?._id
+    };
+
+
+    /*const response = await axios.post('/api/matches', {
+      ...values,
+      date: values.date.format(FORMAT),
       _id: matchData?._id,
       golesLocal,
       golesVisitante,
