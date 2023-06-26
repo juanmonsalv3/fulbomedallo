@@ -1,11 +1,11 @@
 import Head from 'next/head';
-import { Button, Container } from '@mui/material';
-import { Player } from '@/types/players';
+import {Button, Container} from '@mui/material';
+import {Player} from '@/types/players';
 import PlayersList from '@/app/components/players/PlayersList';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import axios from 'axios';
 import PageHeader from '@/app/components/common/pageHeader';
-import { PlayersForm } from '../../src/app/components/players/players-form';
+import {PlayersForm} from '../../src/app/components/players/players-form';
 import CustomDialog from '@/app/components/common/dialogs/CustomDialog';
 
 export default function Players() {
@@ -47,7 +47,7 @@ export default function Players() {
       <Container sx={{ py: 4 }} maxWidth='md'>
         <PlayersList items={players} onUpdatePlayerList={onUpdatePlayerList} />
         <CustomDialog
-          title='Editar Jugador'
+          title='Agregar Jugador'
           isOpen={open}
           handleCancel={handleClose}
         >

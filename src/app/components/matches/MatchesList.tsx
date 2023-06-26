@@ -1,28 +1,16 @@
-import React, {
-  PropsWithChildren,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
-import {
-  Avatar,
-  Dialog,
-  IconButton,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-} from '@mui/material';
+import React, {PropsWithChildren, useCallback, useState,} from 'react';
+import {Avatar, IconButton, List, ListItem, ListItemAvatar, ListItemText,} from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import dayjs from 'dayjs';
-import { Match } from '@/types/matches';
+import {Match} from '@/types/matches';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { ObjectId } from 'mongodb';
+import {ObjectId} from 'mongodb';
 import MatchForm from './MatchForm';
 import CustomDialog from '../common/dialogs/CustomDialog';
 import ConfirmDialog from '../common/dialogs/ConfirmDialog';
 import axios from 'axios';
+
 interface PlayersListProps {
   items: Match[];
   updateMatchesList: () => void;

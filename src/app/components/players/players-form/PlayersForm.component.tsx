@@ -1,10 +1,10 @@
-import { useFormik } from 'formik';
+import {useFormik} from 'formik';
 import * as Yup from 'yup';
-import { Button, Grid, Stack, TextField } from '@mui/material';
+import {Button, Grid, Stack, TextField} from '@mui/material';
 import axios from 'axios';
-import { toast } from 'react-hot-toast';
-import { FormEvent, useEffect } from 'react';
-import { Player } from '@/types/players';
+import {toast} from 'react-hot-toast';
+import {FormEvent, useEffect} from 'react';
+import {Player} from '@/types/players';
 
 const initialValues = {
   name: '',
@@ -94,7 +94,7 @@ export const PlayersForm = ({
   }, [player, setValues]);
 
   return (
-    <form onSubmit={submit} style={{ paddingTop: '20px' }}>
+    <form onSubmit={submit}>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
           <TextField
@@ -150,6 +150,10 @@ export const PlayersForm = ({
             name='jerseyNumber'
             label='Número dorsal'
             type='number'
+            inputProps={{
+              step: 1,
+              min: 0
+            }}
             fullWidth
             value={formik.values.jerseyNumber}
             onChange={formik.handleChange}
