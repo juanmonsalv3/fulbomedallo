@@ -34,6 +34,8 @@ function MatchTeams() {
         marginX="auto"
         sx={{
           position: 'relative',
+          width: '320px',
+          height: '500px',
         }}
       >
         <Image src="/field.jpg" width={320} height={500} alt="field" />
