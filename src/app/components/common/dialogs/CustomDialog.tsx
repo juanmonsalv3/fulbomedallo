@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren } from 'react'
 import {
   Dialog as MuiDialog,
   DialogTitle,
@@ -8,31 +8,31 @@ import {
   IconButton,
   Grid,
   Box,
-} from '@mui/material';
-import styled from '@emotion/styled';
+} from '@mui/material'
+import styled from '@emotion/styled'
 
-import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
 
 type DialogProps = {
-  title: string;
-  isOpen: boolean;
-  showActions?: boolean;
-  handleCancel?: () => void;
-  handleSubmit?: () => void;
-};
+  title: string
+  isOpen: boolean
+  showActions?: boolean
+  handleCancel?: () => void
+  handleSubmit?: () => void
+}
 
 const DialogTitleWrapper = styled(Grid)`
   position: relative;
   align-items: center;
   display: flex;
   justify-content: space-between;
-`;
+`
 
 const StyledCloseButton = styled(IconButton)`
   position: absolute;
   top: 8px;
   right: 8px;
-`;
+`
 
 function CustomDialog({
   title,
@@ -60,7 +60,7 @@ function CustomDialog({
         </DialogActions>
       )}
     </MuiDialog>
-  );
+  )
 }
 
-export default CustomDialog;
+export default CustomDialog

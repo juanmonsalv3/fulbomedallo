@@ -53,6 +53,7 @@ function PlayerSelect({ isOpen, onSave }: Props) {
         )}
         onChange={onPlayerSelected}
         value={selectedPlayer}
+        sx={{minWidth: '350px'}}
       />
     </CustomDialog>
   )
