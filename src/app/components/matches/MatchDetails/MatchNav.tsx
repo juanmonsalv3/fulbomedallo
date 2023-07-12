@@ -44,7 +44,7 @@ export default function MatchNav({ matchData }: Props) {
         <MatchTeams matchData={matchData} />
       </TabPanel>
       <TabPanel index={1}>
-        <MatchEvents />
+        <MatchEvents matchData={matchData} />
       </TabPanel>
     </Box>
   )

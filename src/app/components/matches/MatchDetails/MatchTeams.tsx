@@ -95,7 +95,11 @@ function MatchTeams({ matchData }: Props) {
               {point.player && (
                 <Typography
                   variant="body2"
-                  sx={{ backgroundColor: '#FFF', px: 1 }}
+                  sx={{
+                    backgroundColor: point.y < 50 ? '#FFF' : '#000',
+                    color: point.y < 50 ? '#000' : '#FFF',
+                    px: 1,
+                  }}
                 >
                   {point.player.nickname}
                 </Typography>
