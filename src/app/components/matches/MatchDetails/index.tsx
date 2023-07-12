@@ -1,5 +1,5 @@
 import React from 'react'
-import useSWR from 'swr'
+import useSWR, { useSWRConfig } from 'swr'
 import { useRouter } from 'next/router'
 import { matchesApi } from '@/api'
 import Loading from '../../common/Loading'
@@ -18,6 +18,8 @@ function MatchDetails() {
     matchesApi.getMatch(id)
   )
 
+  const { mutate } = useSWRConfig()
+
   if (isLoading || !matchData) {
     return <Loading />
   }
@@ -29,7 +31,10 @@ function MatchDetails() {
       <Typography variant="subtitle1" textAlign="center">
         {matchData.date} - {matchData.field?.name}
       </Typography>
-      <MatchNav matchData={matchData as Match} />
+      <MatchNav
+        matchData={matchData as Match}
+        onChange={() => mutate([`/api/matches/${matchId}`, matchId])}
+      />
     </>
   )
 }

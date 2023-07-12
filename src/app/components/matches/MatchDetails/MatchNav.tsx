@@ -7,9 +7,10 @@ import MatchEvents from './MatchEvents'
 
 interface Props {
   matchData: Match
+  onChange: () => void
 }
 
-export default function MatchNav({ matchData }: Props) {
+export default function MatchNav({ matchData, onChange }: Props) {
   const [activeTab, setActiveTab] = React.useState(0)
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -41,10 +42,10 @@ export default function MatchNav({ matchData }: Props) {
         </Tabs>
       </Box>
       <TabPanel index={0}>
-        <MatchTeams matchData={matchData} />
+        <MatchTeams matchData={matchData} onChange={onChange} />
       </TabPanel>
       <TabPanel index={1}>
-        <MatchEvents matchData={matchData} />
+        <MatchEvents matchData={matchData} onChange={onChange} />
       </TabPanel>
     </Box>
   )

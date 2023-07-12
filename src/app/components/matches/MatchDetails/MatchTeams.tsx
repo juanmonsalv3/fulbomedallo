@@ -9,6 +9,7 @@ import { toast } from 'react-hot-toast'
 
 interface Props {
   matchData: Match
+  onChange: () => void
 }
 
 type PlayerPoint = Point & {
@@ -25,13 +26,19 @@ for (let x = 20; x <= 80; x += 15) {
 
 const _points = [{ x: 50, y: 10 }, ...generated, { x: 50, y: 90 }]
 
-const teams = {
-  team1: [],
-  team2: [],
-}
+function MatchTeams({ matchData, onChange }: Props) {
+  const playerList = !matchData.playersList
+    ? []
+    : [...matchData.playersList?.team1, ...matchData.playersList?.team2]
+  const calculatedPoints = _points.map((point) => {
+    const player = playerList.find(
+      (playerPosition) =>
+        playerPosition.x === point.x && playerPosition.y === point.y
+    )
 
-function MatchTeams({ matchData }: Props) {
-  const [points, setPoints] = useState<PlayerPoint[]>(_points)
+    return player ? player : point
+  })
+  const [points, setPoints] = useState<PlayerPoint[]>(calculatedPoints)
   const [isPickingPlayer, setIsPickingPlayer] = useState<number>(-1)
 
   const onPlayerSelected = useCallback(
@@ -56,8 +63,9 @@ function MatchTeams({ matchData }: Props) {
     })
     if ((response.status = 200)) {
       toast.success('Cambios guardados')
+      onChange()
     }
-  }, [matchData, points])
+  }, [matchData, onChange, points])
 
   return (
     <>
@@ -138,4 +146,4 @@ function MatchTeams({ matchData }: Props) {
   )
 }
 
-export default MatchTeams
+export default React.memo(MatchTeams)

@@ -19,6 +19,7 @@ export interface Match {
   field?: Field
   date: string
   playersList?: MatchPlayersList
+  events?: MatchEvent[]
 }
 
 export type MatchPlayersList = {
@@ -32,5 +33,13 @@ export interface Point {
 }
 
 export interface PlayerPosition extends Point {
+  player: Player
+}
+
+export type MatchEventType = 'goal' | 'ownGoal'
+
+export type MatchEvent = {
+  eventType: MatchEventType
+  team: 1 | 2
   player: Player
 }

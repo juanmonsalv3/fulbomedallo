@@ -52,7 +52,9 @@ function CustomDialog({
           </StyledCloseButton>
         </DialogTitle>
       </DialogTitleWrapper>
-      <DialogContent>{children}</DialogContent>
+      <DialogContent sx={{ pt: 2, borderTop: '1px solid #ddd' }}>
+        {children}
+      </DialogContent>
       {showActions && (
         <DialogActions>
           <Button onClick={handleCancel}>Cancel</Button>
