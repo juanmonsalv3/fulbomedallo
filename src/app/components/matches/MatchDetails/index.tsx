@@ -23,7 +23,7 @@ function MatchDetails() {
   }
   return (
     <>
-      <Typography variant="h4" textAlign="center">
+      <Typography variant="h5" textAlign="center">
         {matchData.name}
       </Typography>
       <Typography variant="subtitle1" textAlign="center">

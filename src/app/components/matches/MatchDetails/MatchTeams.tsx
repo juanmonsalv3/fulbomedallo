@@ -24,21 +24,19 @@ function MatchTeams() {
     (player: Player) => {
       points[isPickingPlayer].player = player
       setPoints(points)
-      setIsPickingPlayer(-1);
+      setIsPickingPlayer(-1)
     },
     [isPickingPlayer, points]
   )
   return (
     <>
       <Box
-        width={400}
-        height={600}
         marginX="auto"
         sx={{
           position: 'relative',
         }}
       >
-        <Image src="/field.jpg" width={400} height={600} alt="field" />
+        <Image src="/field.jpg" width={320} height={500} alt="field" />
         <Box
           sx={{
             position: 'absolute',
@@ -57,14 +55,13 @@ function MatchTeams() {
                 left: point.x + '%',
                 transform: 'translate(-50%, -50%)',
                 backgroundColor: 'gray',
-                opacity: 0.7,
                 cursor: 'pointer',
                 borderRadius: '12px',
               }}
             >
               {point.player && (
                 <Typography
-                  variant="body1"
+                  variant="body2"
                   sx={{ backgroundColor: '#FFF', px: 1 }}
                 >
                   {point.player.nickname}
@@ -76,6 +73,7 @@ function MatchTeams() {
                     width: '12px',
                     height: '12px',
                     borderRadius: '12px',
+                    opacity: 0.7,
                     ':hover': {
                       outline: '1px solid blue',
                       outlineOffset: '2px',
@@ -89,7 +87,11 @@ function MatchTeams() {
           ))}
         </Box>
       </Box>
-      <PlayerSelect isOpen={isPickingPlayer > -1} onSave={onPlayerSelected} />
+      <PlayerSelect
+        isOpen={isPickingPlayer > -1}
+        onSave={onPlayerSelected}
+        onCancel={() => setIsPickingPlayer(-1)}
+      />
     </>
   )
 }

@@ -9,9 +9,10 @@ import Loading from '../../common/Loading'
 interface Props {
   isOpen: boolean
   onSave: (player: Player) => void
+  onCancel: () => void
 }
 
-function PlayerSelect({ isOpen, onSave }: Props) {
+function PlayerSelect({ isOpen, onSave, onCancel }: Props) {
   const {
     data: selectablePlayers,
     error,
@@ -37,7 +38,11 @@ function PlayerSelect({ isOpen, onSave }: Props) {
     return <Loading />
   }
   return (
-    <CustomDialog title="Selecciona un Jugador" isOpen={isOpen}>
+    <CustomDialog
+      title="Seleccionar Jugador"
+      isOpen={isOpen}
+      handleCancel={onCancel}
+    >
       <Autocomplete
         options={selectablePlayers}
         getOptionLabel={(option: Player) =>
@@ -48,12 +53,10 @@ function PlayerSelect({ isOpen, onSave }: Props) {
             {(option as Player).nickname} - {(option as Player).name}
           </li>
         )}
-        renderInput={(params) => (
-          <TextField {...params} label="Agregar Jugador" />
-        )}
+        renderInput={(params) => <TextField {...params} label="Jugador" />}
         onChange={onPlayerSelected}
         value={selectedPlayer}
-        sx={{minWidth: '350px'}}
+        sx={{ minWidth: '260px' }}
       />
     </CustomDialog>
   )
