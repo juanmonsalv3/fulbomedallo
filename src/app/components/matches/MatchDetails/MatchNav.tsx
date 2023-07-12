@@ -7,7 +7,7 @@ import StepContent from '@mui/material/StepContent'
 import Button from '@mui/material/Button'
 import Paper from '@mui/material/Paper'
 import Typography from '@mui/material/Typography'
-import { StepButton } from '@mui/material'
+import { StepButton, Tab, Tabs } from '@mui/material'
 import { Match } from '@/types/matches'
 import MatchPlayersList from './MatchPlayersList'
 import MatchTeams from './MatchTeams'
@@ -17,7 +17,7 @@ interface Props {
   matchData: Match
 }
 
-export default function MatchStepper({ matchData }: Props) {
+export default function MatchNav({ matchData }: Props) {
   const [activeStep, setActiveStep] = React.useState(0)
 
   const handleNext = (index: number) => {
@@ -62,10 +62,42 @@ export default function MatchStepper({ matchData }: Props) {
   //   </Box>
   // )
 
+  const [value, setValue] = React.useState(0)
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue)
+  }
+
+  function TabPanel({
+    index,
+    children,
+  }: React.PropsWithChildren<{ index: number }>) {
+    return (
+      <Box
+        sx={{
+          my: 2,
+        }}
+        display={index === value ? 'block' : 'none'}
+      >
+        {children}
+      </Box>
+    )
+  }
+
   return (
     <Box>
-      <MatchTeams />
-      <MatchEvents />
+      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        <Tabs value={value} onChange={handleChange}>
+          <Tab label="Equipos" />
+          <Tab label="Eventos" />
+        </Tabs>
+      </Box>
+      <TabPanel index={0}>
+        <MatchTeams matchData={matchData} />
+      </TabPanel>
+      <TabPanel index={1}>
+        <MatchEvents />
+      </TabPanel>
     </Box>
   )
 }

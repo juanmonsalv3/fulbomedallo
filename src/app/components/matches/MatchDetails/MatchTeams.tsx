@@ -1,12 +1,21 @@
 import React, { useCallback, useState } from 'react'
 import Image from 'next/image'
-import { Box, Typography } from '@mui/material'
+import { Box, Button, Typography } from '@mui/material'
 import { Player } from '@/types/players'
 import PlayerSelect from './PlayerSelect'
+import { Match, PlayerPosition, Point } from '@/types/matches'
+import { matchesApi } from '@/api'
+import { toast } from 'react-hot-toast'
 
-type Point = { x: number; y: number; player?: Player }
+interface Props {
+  matchData: Match
+}
 
-let generated: Point[] = []
+type PlayerPoint = Point & {
+  player?: Player
+}
+
+let generated: PlayerPoint[] = []
 
 for (let x = 20; x <= 80; x += 15) {
   for (let y = 20; y <= 80; y += 12) {
@@ -14,10 +23,15 @@ for (let x = 20; x <= 80; x += 15) {
   }
 }
 
-const _points: Point[] = [{ x: 50, y: 10 }, ...generated, { x: 50, y: 90 }]
+const _points = [{ x: 50, y: 10 }, ...generated, { x: 50, y: 90 }]
 
-function MatchTeams() {
-  const [points, setPoints] = useState<Point[]>(_points)
+const teams = {
+  team1: [],
+  team2: [],
+}
+
+function MatchTeams({ matchData }: Props) {
+  const [points, setPoints] = useState<PlayerPoint[]>(_points)
   const [isPickingPlayer, setIsPickingPlayer] = useState<number>(-1)
 
   const onPlayerSelected = useCallback(
@@ -28,6 +42,23 @@ function MatchTeams() {
     },
     [isPickingPlayer, points]
   )
+
+  const onSaveClick = useCallback(async () => {
+    const pointsSelected1 = points.filter((p) => !!p.player && p.y < 50)
+    const pointsSelected2 = points.filter((p) => !!p.player && p.y > 50)
+
+    const response = await matchesApi.editMatch({
+      ...matchData,
+      playersList: {
+        team1: pointsSelected1 as PlayerPosition[],
+        team2: pointsSelected2 as PlayerPosition[],
+      },
+    })
+    if ((response.status = 200)) {
+      toast.success('Cambios guardados')
+    }
+  }, [matchData, points])
+
   return (
     <>
       <Box
@@ -88,6 +119,11 @@ function MatchTeams() {
             </Box>
           ))}
         </Box>
+      </Box>
+      <Box sx={{ my: 2 }} textAlign="center">
+        <Button variant="contained" onClick={onSaveClick} sx={{ mt: 1, mr: 1 }}>
+          Guardar
+        </Button>
       </Box>
       <PlayerSelect
         isOpen={isPickingPlayer > -1}

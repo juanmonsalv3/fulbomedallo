@@ -2,6 +2,7 @@ import { ObjectId } from 'mongodb'
 import clientPromise from '../../../lib/mongodb'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { Match } from '@/types/matches'
+import { setObjectId } from '@/utils/mongo'
 
 export const getMatch = async (id: string) => {
   const client = await clientPromise
@@ -27,15 +28,20 @@ export const updateMatch = async (id: any, match: Match) => {
 
   if (newMatch.field) {
     insertData.field = {
-      ...newMatch.field,
-      _id: new ObjectId(newMatch.field._id),
+      ...setObjectId(newMatch.field),
     }
   }
   if (newMatch.playersList) {
-    insertData.playersList = insertData.playersList?.map((p) => ({
-      ...p,
-      _id: new ObjectId(p._id),
-    }))
+    insertData.playersList = {
+      team1: newMatch.playersList.team1.map((p) => ({
+        ...p,
+        player: { ...setObjectId(p.player) },
+      })),
+      team2: newMatch.playersList.team2.map((p) => ({
+        ...p,
+        player: { ...setObjectId(p.player) },
+      })),
+    }
   }
 
   return await db

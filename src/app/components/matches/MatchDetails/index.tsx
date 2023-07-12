@@ -3,7 +3,7 @@ import useSWR from 'swr'
 import { useRouter } from 'next/router'
 import { matchesApi } from '@/api'
 import Loading from '../../common/Loading'
-import MatchStepper from './MatchStepper'
+import MatchNav from './MatchNav'
 import { Match } from '@/types/matches'
 import { Typography } from '@mui/material'
 
@@ -29,7 +29,7 @@ function MatchDetails() {
       <Typography variant="subtitle1" textAlign="center">
         {matchData.date} - {matchData.field?.name}
       </Typography>
-      <MatchStepper matchData={matchData as Match} />
+      <MatchNav matchData={matchData as Match} />
     </>
   )
 }

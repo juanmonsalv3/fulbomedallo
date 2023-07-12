@@ -21,4 +21,16 @@ export interface Match {
   playersList?: MatchPlayersList
 }
 
-export type MatchPlayersList = Player[];
+export type MatchPlayersList = {
+  team1: PlayerPosition[]
+  team2: PlayerPosition[]
+}
+
+export interface Point {
+  x: number
+  y: number
+}
+
+export interface PlayerPosition extends Point {
+  player: Player
+}
