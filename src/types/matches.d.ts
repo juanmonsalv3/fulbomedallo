@@ -1,9 +1,10 @@
-import {ObjectId} from "mongodb";
+import { ObjectId } from 'mongodb'
+import { Player } from './players'
 
 export interface Field {
-  _id: string;
-  name: string;
-  capacity: number;
+  _id: ObjectId
+  name: string
+  capacity: number
 }
 
 export interface Stats {
@@ -13,12 +14,11 @@ export interface Stats {
 }
 
 export interface Match {
-  _id: ObjectId;
-  name: string;
-  field: Field;
-  date: string;
-  golesLocal: number;
-  golesVisitante: number;
-  local: Stats[];
-  visitante: Stats[];
+  _id: ObjectId
+  name: string
+  field?: Field
+  date: string
+  playersList?: MatchPlayersList
 }
+
+export type MatchPlayersList = Player[];

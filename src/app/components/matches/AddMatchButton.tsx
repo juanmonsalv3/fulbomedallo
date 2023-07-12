@@ -1,35 +1,37 @@
-import { Box, Button, Typography } from '@mui/material';
-import React, { useCallback, useState } from 'react';
-import CustomDialog from '../common/dialogs/CustomDialog';
-import MatchForm from './MatchForm';
-import { ObjectId } from 'mongodb';
+import { Box, Button, Fab, Typography } from '@mui/material'
+import React, { useCallback, useState } from 'react'
+import AddIcon from '@mui/icons-material/Add'
+import CustomDialog from '../common/dialogs/CustomDialog'
+import MatchForm from './MatchForm'
+import MatchFormDialog from './MatchFormDialog'
 
-type Props = { onMatchAdded: (id: ObjectId) => void };
+type Props = { onMatchAdded: () => void }
 
 function AddMatchButton({ onMatchAdded }: Props) {
-  const [open, setOpen] = useState(false);
-  const handleOpen = useCallback(() => setOpen(true), [setOpen]);
-  const handleClose = useCallback(() => setOpen(false), [setOpen]);
+  const [open, setOpen] = useState(false)
+  const handleOpen = useCallback(() => setOpen(true), [setOpen])
+  const handleClose = useCallback(() => setOpen(false), [setOpen])
 
   return (
-    <Box>
-      <Button variant='contained' onClick={handleOpen}>
-        Nuevo
-      </Button>
-      <CustomDialog
-        title='Datos Partido'
-        isOpen={open}
-        handleCancel={handleClose}
+    <>
+      <Fab
+        color="primary"
+        size="large"
+        sx={{ position: 'absolute', bottom: 16, right: 16 }}
+        onClick={() => handleOpen()}
       >
-        <MatchForm
-          onSave={(id) => {
-            setOpen(false);
-            onMatchAdded(id)
-          }}
-        />
-      </CustomDialog>
-    </Box>
-  );
+        <AddIcon />
+      </Fab>
+      <MatchFormDialog
+        isOpen={open}
+        handleClose={handleClose}
+        handleSave={() => {
+          setOpen(false)
+          onMatchAdded()
+        }}
+      />
+    </>
+  )
 }
 
-export default AddMatchButton;
+export default AddMatchButton

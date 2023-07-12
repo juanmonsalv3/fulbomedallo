@@ -1,54 +1,19 @@
-import PageHeader from '@/app/components/common/pageHeader';
-import AddMatchButton from '@/app/components/matches/AddMatchButton';
-import MatchesList from '@/app/components/matches/MatchesList';
-import { Match } from '@/types/matches';
-import { Container, Stack } from '@mui/material';
-import Head from 'next/head';
-import React, { useCallback, useEffect, useState } from 'react';
-import { getMatches } from '../api/matches';
-import axios from 'axios';
-import { ObjectId } from 'mongodb';
-import { useRouter } from 'next/router';
+import React, { Suspense } from 'react'
+import Head from 'next/head'
+import MatchesList from '@/app/components/matches/MatchesList'
+import Loading from '@/app/components/common/Loading'
 
 function Matches() {
-  const router = useRouter();
-  const [matches, setMatches] = useState<Match[]>([]);
-
-  const fetchMatches = useCallback(async () => {
-    const response = await axios.get('/api/matches');
-    setMatches(response.data as Match[]);
-  }, []);
-
-  useEffect(() => {
-    fetchMatches();
-  }, [fetchMatches]);
-
-  const updateMatchesList = useCallback(async () => {
-    fetchMatches();
-  }, [fetchMatches]);
-
-  const onMatchAdded = useCallback(
-    (id: ObjectId) => {
-      router.push('/matches/' + id);
-    },
-    [router]
-  );
-
   return (
-    <> 
+    <>
       <Head>
         <title>Fulbo Medallo</title>
       </Head>
-      <PageHeader title='Cotejos'>
-        <Stack direction='row' spacing={2} justifyContent='left'>
-          <AddMatchButton onMatchAdded={onMatchAdded} />
-        </Stack>
-      </PageHeader>
-      <Container sx={{ py: 4 }} maxWidth='md'>
-        <MatchesList items={matches} updateMatchesList={updateMatchesList} />
-      </Container>
+      <Suspense fallback={<Loading />}>
+        <MatchesList />
+      </Suspense>
     </>
-  );
+  )
 }
 
 // export async function getServerSideProps() {
@@ -63,4 +28,4 @@ function Matches() {
 //   }
 // }
 
-export default Matches;
+export default Matches

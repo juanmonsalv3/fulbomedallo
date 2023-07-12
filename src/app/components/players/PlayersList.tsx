@@ -1,120 +1,108 @@
-import React, { Key, PropsWithChildren, useCallback, useState } from 'react';
-import {
-  Avatar,
-  IconButton,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-} from '@mui/material';
-import PersonIcon from '@mui/icons-material/Person';
-import { Player } from '@/types/players';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-import { ObjectId } from 'mongodb';
-import { toast } from 'react-hot-toast';
-import { PlayersForm } from './players-form';
-import CustomDialog from '../common/dialogs/CustomDialog';
+import React, { useCallback, useEffect, useState } from 'react'
+import { ObjectId } from 'mongodb'
+import { toast } from 'react-hot-toast'
 
-import axios from 'axios';
-import ConfirmDialog from '../common/dialogs/ConfirmDialog';
+import { Player } from '@/types/players'
+import CustomDialog from '../common/dialogs/CustomDialog'
+import ConfirmDialog from '../common/dialogs/ConfirmDialog'
+import EditDeleteList from '../common/EditDeleteList'
+import { playersApi } from '@/api'
+import AddPlayerButton from './AddPlayerButton'
+import PlayerFormDialog from './PlayerFormDialog'
 
-interface PlayersListProps {
-  items: Player[];
-  onUpdatePlayerList: () => void;
-}
-function PlayersList({
-  items,
-  onUpdatePlayerList,
-}: PropsWithChildren<PlayersListProps>) {
-  const [openEdit, setOpenEdit] = useState(false);
-  const [openDelete, setOpenDelete] = useState(false);
-  const [playerId, setPlayerId] = useState<any>(null);
-  const [playerEditing, setPlayerEditing] = useState<Player>();
+function PlayersList() {
+  const [players, setPlayers] = useState<Player[] | null>(null)
+  const [openEdit, setOpenEdit] = useState(false)
+  const [openDelete, setOpenDelete] = useState(false)
+  const [playerEditing, setPlayerEditing] = useState<Player | null>(null)
 
-  const onEdit = async (id: ObjectId) => {
+  const fetchPlayers = useCallback(async () => {
+    setPlayers(null)
+    const players = await playersApi.getPlayers()
+    setPlayers(players)
+  }, [])
+
+  useEffect(() => {
+    fetchPlayers()
+  }, [fetchPlayers])
+
+  const onEditClick = async (id: ObjectId) => {
     try {
-      const response = await axios.get(`/api/players/${id}`);
-
-      setPlayerEditing(response.data);
-      setOpenEdit(true);
+      const player = players?.find((p) => p._id === id)
+      setPlayerEditing(player!)
+      setOpenEdit(true)
     } catch (e) {
-      toast.error('Algo explotó.');
+      toast.error('Algo explotó.')
     }
-  };
+  }
 
   const closeEdit = () => {
-    setOpenEdit(false);
-  };
+    setPlayerEditing(null)
+    setOpenEdit(false)
+  }
 
-  const onDelete = (id: ObjectId) => {
-    setPlayerId(id);
-    setOpenDelete(true);
-  };
+  const onDeleteClick = (id: ObjectId) => {
+    const player = players?.find((p) => p._id === id)
+    setPlayerEditing(player!)
+    setOpenDelete(true)
+  }
 
   const closeDelete = () => {
-    setOpenDelete(false);
-  };
+    setOpenDelete(false)
+  }
 
-  const handleDelete = useCallback(async () => {
+  const confirmDelete = useCallback(async () => {
     try {
-      await axios.delete(`/api/players/${playerId}`);
-      onUpdatePlayerList();
-      toast.success('Jugador eliminado.');
-
-      setOpenDelete(false);
+      if (playerEditing) {
+        await playersApi.deletePlayer(playerEditing._id)
+        fetchPlayers()
+        toast.success('Jugador eliminado.')
+      }
+      setOpenDelete(false)
     } catch (e) {
-      toast.error('Algo explotó.');
+      toast.error('Algo explotó.')
     }
-  }, [onUpdatePlayerList, playerId]);
+  }, [playerEditing, fetchPlayers])
+
+  const items = players?.map((player) => ({
+    _id: player._id,
+    primaryText: player.nickname || player.name,
+    secondaryText: player.nickname ? player.name : '',
+  }))
 
   return (
     <>
-      <List>
-        {(!items || items.length === 0) && (
-          <ListItem>
-            <ListItemText primary='No hay jugadores registrados' />
-          </ListItem>
-        )}
-        {items.map((item) => (
-          <ListItem
-            key={item._id as unknown as Key}
-            secondaryAction={
-              <>
-                <IconButton onClick={onEdit.bind(null, item._id as ObjectId)}>
-                  <EditIcon />
-                </IconButton>
-                <IconButton onClick={onDelete.bind(null, item._id as ObjectId)}>
-                  <DeleteIcon />
-                </IconButton>
-              </>
-            }
-          >
-            <ListItemAvatar>
-              <Avatar>
-                <PersonIcon />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText primary={item.nickname} secondary={item.name} />
-          </ListItem>
-        ))}
-      </List>
-      <CustomDialog title='Editar Jugador' isOpen={openEdit} handleCancel={closeEdit}>
-        <PlayersForm
+      <EditDeleteList
+        title="Jugadores"
+        items={items}
+        onDeleteClick={onDeleteClick}
+        onEditClick={onEditClick}
+      />
+      <CustomDialog
+        title="Editar Jugador"
+        isOpen={openEdit}
+        handleCancel={closeEdit}
+      >
+        <PlayerFormDialog
           player={playerEditing}
-          onUpdatePlayerList={onUpdatePlayerList}
-          closeEdit={closeEdit}
+          isOpen={openEdit}
+          handleClose={closeEdit}
+          handleSave={() => {
+            fetchPlayers()
+            closeEdit()
+          }}
         />
       </CustomDialog>
       <ConfirmDialog
-        title='Eliminar Jugador'
-        contentText='Desea eliminar el jugador?'
+        title="Eliminar Jugador"
+        contentText="Desea eliminar el jugador?"
         isOpen={openDelete}
-        handleConfirm={handleDelete}
+        handleConfirm={confirmDelete}
         handleCancel={closeDelete}
       />
+      <AddPlayerButton onPlayerAdded={fetchPlayers} />
     </>
-  );
+  )
 }
 
-export default PlayersList;
+export default PlayersList
